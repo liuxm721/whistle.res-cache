@@ -1,4 +1,4 @@
-const ROOT_URL = "http://127.0.0.1:8899/plugin.res-cache/";
+const ROOT_URL = "/plugin.res-cache/";
 
 const PATH_MAP = {
   getFileList: "cgi-bin/get-file-list",

@@ -15,7 +15,7 @@ export function useFile() {
       .catch((err) => {
         console.log(err);
         fileList.length = 0;
-      })
+      });
   }
 
   function setFile(_file) {
@@ -29,7 +29,10 @@ export function useFile() {
   }
 
   function clearFile() {
-    return apis.clearFile();
+    return apis.clearFile().then(() => {
+      file.value = null;
+      fileList.length = 0;
+    });
   }
 
   function updateFile(data) {

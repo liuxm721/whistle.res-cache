@@ -1,6 +1,6 @@
 {
   "name": "whistle.res-cache",
-  "version": "0.0.1-beta",
+  "version": "0.0.1-dev-20250114",
   "description": "",
   "scripts": {
     "dev": "vite --config src/vite.config.js",

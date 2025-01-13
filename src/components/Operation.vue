@@ -10,10 +10,12 @@ import { useEditor } from "../hooks/editor";
 
 const { clearFile, updateFile, removeFile, file, setFileList, setFile } =
   useFile();
-const { getValue, updateEditor } = useEditor();
+const { getValue, updateEditor, clearEditor } = useEditor();
 
 function onClear() {
-  clearFile();
+  clearFile().then(() => {
+    clearEditor();
+  });
 }
 
 function onSave() {
