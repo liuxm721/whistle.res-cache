@@ -7,16 +7,26 @@
 <script setup>
 import { useFile } from "../hooks/file";
 import { useEditor } from "../hooks/editor";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 
 const { clearFile, updateFile, removeFile, file, setFileList, setFile } =
   useFile();
-const { getValue, updateEditor, clearEditor } = useEditor();
+const { getValue, updateEditor, clearEditor, addEventListener } = useEditor();
 
 function onClear() {
   clearFile().then(() => {
     clearEditor();
   });
 }
+
+function shortcutKeySave(event) {
+  if (event.ctrlKey && event.keyCode === monaco.KeyCode.KeyS) {
+    event.preventDefault();
+    onSave();
+  }
+}
+
+addEventListener("onKeyDown", shortcutKeySave);
 
 function onSave() {
   updateFile({

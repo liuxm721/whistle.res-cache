@@ -33,6 +33,7 @@ export function useEditor() {
       theme: "vs-dark",
       value: null,
       language: null,
+      wordWrap: 'on',
     });
 
     // 注册事件
@@ -44,7 +45,6 @@ export function useEditor() {
       });
     }
 
-    editor.onDidChangeModelContent;
     return editor;
   }
 
