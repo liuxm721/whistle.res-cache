@@ -15,10 +15,8 @@ export default defineConfig({
       "/plugin.res-cache/cgi-bin": {
         target: "http://127.0.0.1:8899",
         changeOrigin: true,
-      }
-    }
+      },
+    },
   },
-  html: {
-    
-  }
+  html: {},
 });

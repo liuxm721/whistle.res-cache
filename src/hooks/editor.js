@@ -1,18 +1,29 @@
 import { ref } from "vue";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
-import "monaco-editor/esm/vs/basic-languages/monaco.contribution";
-import "monaco-editor/esm/vs/language/json/monaco.contribution";
-import "monaco-editor/esm/vs/language/css/monaco.contribution";
-import 'monaco-editor/esm/vs/editor/editor.all.js';
-// import 'monaco-editor/esm/vs/editor/standalone/browser/iPadShowKeyboard/iPadShowKeyboard.js';
-// import 'monaco-editor/esm/vs/editor/standalone/browser/inspectTokens/inspectTokens.js';
-// import 'monaco-editor/esm/vs/editor/standalone/browser/quickAccess/standaloneHelpQuickAccess.js';
-// import 'monaco-editor/esm/vs/editor/standalone/browser/quickAccess/standaloneGotoLineQuickAccess.js';
-// import 'monaco-editor/esm/vs/editor/standalone/browser/quickAccess/standaloneGotoSymbolQuickAccess.js';
-// import 'monaco-editor/esm/vs/editor/standalone/browser/quickAccess/standaloneCommandsQuickAccess.js';
-// import 'monaco-editor/esm/vs/editor/standalone/browser/referenceSearch/standaloneReferenceSearch.js';
-// import 'monaco-editor/esm/vs/editor/standalone/browser/toggleHighContrast/toggleHighContrast.js';
-// import "monaco-editor/esm/vs/language/html/monaco.contribution";
+import * as monaco from "monaco-editor";
+
+import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
+import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
+import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
+import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
+import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
+
+self.MonacoEnvironment = {
+  getWorker(_, label) {
+    if (label === "json") {
+      return new jsonWorker();
+    }
+    if (label === "css" || label === "scss" || label === "less") {
+      return new cssWorker();
+    }
+    if (label === "html" || label === "handlebars" || label === "razor") {
+      return new htmlWorker();
+    }
+    if (label === "typescript" || label === "javascript") {
+      return new tsWorker();
+    }
+    return new editorWorker();
+  },
+};
 
 let editor;
 let curData;
@@ -33,7 +44,8 @@ export function useEditor() {
       theme: "vs-dark",
       value: null,
       language: null,
-      wordWrap: 'on',
+      wordWrap: "on", // 自动换行
+      readOnly: true, // 只读
     });
 
     // 注册事件
@@ -53,7 +65,6 @@ export function useEditor() {
     const mimeType = contentType.split(";")[0];
     const lang = mimeType.split("/")[1];
     editor.getModel().setLanguage(lang);
-    console.log('uri', editor.getModel().uri);
 
     // 格式化json
     if (lang === "json") {
@@ -62,10 +73,14 @@ export function useEditor() {
 
     curData = data;
     editor.setValue(data);
+    if (data) {
+      editor.updateOptions({ readOnly: false });
+    }
   }
 
   function clearEditor() {
     editor.setValue("");
+    editor.updateOptions({ readOnly: true });
   }
 
   function getValue() {

@@ -26,8 +26,11 @@ function handleMouseMove(e) {
   if (isDragging.value) {
     const leftWidth = e.clientX;
     document.querySelector(
-      ".resize-container--left"
+      ".resize-bottom--left"
     ).style.width = `${leftWidth}px`;
+
+    // 触发 resize 事件
+    window.dispatchEvent(new Event("resize"));
   }
 }
 

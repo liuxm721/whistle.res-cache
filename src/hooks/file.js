@@ -1,7 +1,10 @@
 import { reactive, ref } from "vue";
 import apis from "../api";
 
+// 文件列表
 const fileList = reactive([]);
+
+// 当前文件
 const file = ref(null);
 
 export function useFile() {
