@@ -18,11 +18,17 @@ watch(file, (newFile) => {
 onMounted(() => {
   const editor = createEditor(document.getElementById("editor-container"));
   const editorWarp = document.getElementById("editor-warp");
+  let timer = null;
   window.addEventListener("resize", () => {
-    editor.layout({
-      width: editorWarp.clientWidth,
-      height: editorWarp.clientHeight,
-    });
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      editor.layout({
+        width: editorWarp.clientWidth,
+        height: editorWarp.clientHeight,
+      });
+    }, 300);
   });
 });
 </script>
