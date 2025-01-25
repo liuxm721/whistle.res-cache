@@ -21,28 +21,23 @@ import { useFile } from "../hooks/file";
 import { useEditor } from "../hooks/editor";
 
 const { setFileList, fileList, setFile, file } = useFile();
-const { updateEditor, isChange } = useEditor();
+const { isChange } = useEditor();
 
 function onClickRecord(item) {
   setFile(item);
-  const { body, headers } = item.data;
-  updateEditor(body, { headers });
 }
 
-onMounted(() => {
-  // 定时刷新文件列表
-  setInterval(() => {
-    setFileList().finally(() => {
-      // 更新编辑器内容
-      const oldFile = file.value;
-      setFile(file.value);
-      if (oldFile?.name !== file.value?.name) {
-        const { body, headers } = file.value.data;
-        updateEditor(body, { headers });
-      }
-    });
-  }, 1000);
-});
+// 定时刷新文件列表
+function refreshFileList() {
+  setFileList().finally(() => {
+    // 更新编辑器内容
+    setFile(file.value);
+    setTimeout(refreshFileList, 1000);
+  });
+}
+
+refreshFileList();
+
 </script>
 
 <style lang="scss">

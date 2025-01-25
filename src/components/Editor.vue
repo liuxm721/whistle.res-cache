@@ -8,11 +8,19 @@ import { onMounted, watch } from "vue";
 import { useEditor } from "../hooks/editor";
 import { useFile } from "../hooks/file";
 
-const { createEditor } = useEditor();
+const { createEditor, updateEditor, clearEditor } = useEditor();
 const { file } = useFile();
 
-watch(file, (newFile) => {
-  // console.log(newFile);
+watch(file, (newFile, oldFile) => {
+  if (!newFile) {
+    clearEditor();
+    return;
+  }
+  if (newFile?.name === oldFile?.name) {
+    return;
+  }
+  const { body, headers } = newFile.data;
+  updateEditor(body, { headers });
 });
 
 onMounted(() => {

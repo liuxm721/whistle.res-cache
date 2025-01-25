@@ -11,7 +11,7 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 
 const { clearFile, updateFile, removeFile, file, setFileList, setFile } =
   useFile();
-const { getValue, updateEditor, clearEditor, addEventListener } = useEditor();
+const { getValue, clearEditor, addEventListener } = useEditor();
 
 function onClear() {
   clearFile().then(() => {
@@ -39,8 +39,6 @@ function onSave() {
     .then(setFileList)
     .then(() => {
       setFile(file.value);
-      const { body, headers } = file.value.data;
-      updateEditor(body, { headers });
     });
 }
 
