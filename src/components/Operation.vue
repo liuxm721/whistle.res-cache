@@ -15,10 +15,13 @@
       </button>
     </div>
     <div class="operation-right">
-      <select class="vscode-dropdown">
-        <option>JSON</option>
-        <option>XML</option>
-        <option>YAML</option>
+      <select class="vscode-dropdown" @change="onLanguageChange">
+        <optgroup label="常用">
+          <option v-for="language in commonLanguages" :key="language">{{ language }}</option>
+        </optgroup>
+        <optgroup label="其他">
+          <option v-for="language in otherLanguages" :key="language">{{ language }}</option>
+        </optgroup>
       </select>
     </div>
   </div>
@@ -31,7 +34,11 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 
 const { clearFile, updateFile, removeFile, file, setFileList, setFile } =
   useFile();
-const { getValue, clearEditor, addEventListener } = useEditor();
+const { getValue, clearEditor, addEventListener, setLanguage } = useEditor();
+
+const languages = monaco.languages.getLanguages().map(lang => lang.id);
+const commonLanguages = ["javascript", "typescript", "python", "java", "csharp"];
+const otherLanguages = languages.filter(lang => !commonLanguages.includes(lang) && !lang.includes("freemarker2"));
 
 function onClear() {
   clearFile().then(() => {
@@ -67,6 +74,11 @@ function onRemove() {
     name: file.value.name,
   });
 }
+
+function onLanguageChange(event) {
+  const selectedLanguage = event.target.value;
+  setLanguage(selectedLanguage);
+}
 </script>
 
 <style lang="scss">
@@ -76,5 +88,27 @@ function onRemove() {
   background-color: var(--vscode-sidebar-bg);
   padding: 10px;
   border-bottom: 1px solid var(--vscode-sidebar-border);
+}
+
+.vscode-dropdown {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.vscode-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.vscode-dropdown::-webkit-scrollbar-thumb {
+  background-color: var(--vscode-scrollbarSlider-background);
+  border-radius: 4px;
+}
+
+.vscode-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+.vscode-dropdown::-webkit-scrollbar-thumb:active {
+  background-color: var(--vscode-scrollbarSlider-activeBackground);
 }
 </style>

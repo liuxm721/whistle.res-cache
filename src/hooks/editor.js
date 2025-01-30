@@ -64,7 +64,7 @@ export function useEditor() {
     const contentType = headers["content-type"];
     const mimeType = contentType.split(";")[0];
     const lang = mimeType.split("/")[1];
-    editor.getModel().setLanguage(lang);
+    setLanguage(lang);
 
     // 格式化json
     if (lang === "json") {
@@ -94,6 +94,10 @@ export function useEditor() {
     onEvent[event].push(cb);
   }
 
+  function setLanguage(language) {
+    monaco.editor.setModelLanguage(editor.getModel(), language);
+  }
+
   return {
     createEditor,
     updateEditor,
@@ -101,5 +105,6 @@ export function useEditor() {
     addEventListener,
     isChange,
     clearEditor,
+    setLanguage,
   };
 }
