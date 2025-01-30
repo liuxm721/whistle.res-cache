@@ -45,17 +45,17 @@ refreshFileList();
   .list-item {
     line-height: 1.5;
     cursor: pointer;
-    border-bottom: 1px solid #ddd;
+    // border-bottom: 1px solid #ddd;
     font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     &:hover {
-      background-color: #dadada;
+      // background-color: #dadada;
     }
     &--active,
     &--active:hover {
-      background-color: #7cc0f8;
+      background-color: var(--vscode-dropdown-hover-bg);
     }
     &--isChange::before {
       content: "*";

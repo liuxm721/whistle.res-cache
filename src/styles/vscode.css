@@ -1,0 +1,64 @@
+:root {
+  --vscode-bg: #1e1e1e;
+  --vscode-sidebar-bg: #252526;
+  --vscode-sidebar-border: #333333;
+  --vscode-editor-bg: #1e1e1e;
+  --vscode-text: #d4d4d4;
+  --vscode-active-tab: #1e1e1e;
+  --vscode-inactive-tab: #2d2d2d;
+  --vscode-button-bg: #0e639c;
+  --vscode-button-hover-bg: #1177bb;
+  --vscode-button-text: #ffffff;
+  --vscode-input-bg: #3c3c3c;
+  --vscode-input-text: #cccccc;
+  --vscode-dropdown-bg: #3c3c3c;
+  --vscode-dropdown-border: #3c3c3c;
+  --vscode-dropdown-text: #f0f0f0;
+  --vscode-dropdown-hover-bg: #094771;
+  --vscode-icon: #c5c5c5;
+}
+
+body {
+  background-color: var(--vscode-bg);
+  color: var(--vscode-text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.vscode-button {
+  background-color: var(--vscode-button-bg);
+  color: var(--vscode-button-text);
+  border: none;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.vscode-button:hover {
+  background-color: var(--vscode-button-hover-bg);
+}
+
+.vscode-input {
+  background-color: var(--vscode-input-bg);
+  color: var(--vscode-input-text);
+  border: 1px solid var(--vscode-dropdown-border);
+  padding: 4px 8px;
+  font-size: 13px;
+}
+
+.vscode-dropdown {
+  background-color: var(--vscode-dropdown-bg);
+  color: var(--vscode-dropdown-text);
+  border: 1px solid var(--vscode-dropdown-border);
+  padding: 4px 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.vscode-dropdown:hover {
+  background-color: var(--vscode-dropdown-hover-bg);
+}
+

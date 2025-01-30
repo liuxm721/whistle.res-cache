@@ -16,50 +16,40 @@
 <script setup>
 import { ref } from "vue";
 
-const isDragging = ref(false);
+function handleMouseDown(e) {
+  e.preventDefault();
 
-const handleMouseDown = (e) => {
-  isDragging.value = true;
-};
-
-function handleMouseMove(e) {
-  if (isDragging.value) {
+  const handleMouseMove = (e) => {
     const leftWidth = e.clientX;
     document.querySelector(
       ".resize-bottom--left"
     ).style.width = `${leftWidth}px`;
-
     // 触发 resize 事件
     window.dispatchEvent(new Event("resize"));
-  }
+  };
+
+  const handleMouseUp = () => {
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+  };
+
+  document.addEventListener("mousemove", handleMouseMove);
+  document.addEventListener("mouseup", handleMouseUp);
 }
-
-function handleMouseUp() {
-  isDragging.value = false;
-}
-
-window.addEventListener("mousemove", handleMouseMove);
-
-window.addEventListener("mouseup", handleMouseUp);
 </script>
 
 <style lang="scss" scoped>
 .resize-container {
   display: flex;
   flex-direction: column;
-  background-color: #f0f0f0;
   height: 100vh;
 
-  
-  
   .resize-top {
-    height: 30px;
-    background-color: #f0f0f0;
+    // height: 30px;
   }
   .resize-bottom {
     display: flex;
     flex: 1 1 auto;
-    background-color: #f0f0f0;
   }
   .resize-bottom--left {
     flex: 0 0 auto;
@@ -79,8 +69,8 @@ window.addEventListener("mouseup", handleMouseUp);
     right: 0;
     width: 6px;
     height: 100%;
-    cursor: ew-resize;
-    border-right: 1px solid #fff;
+    cursor: col-resize;
+    background-color: var(--vscode-sidebar-border);
   }
 }
 </style>
