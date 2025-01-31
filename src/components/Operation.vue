@@ -15,12 +15,16 @@
       </button>
     </div>
     <div class="operation-right">
-      <select class="vscode-dropdown" @change="onLanguageChange">
+      <select class="vscode-dropdown" :value="fileType"  @change="onLanguageChange">
         <optgroup label="常用">
-          <option v-for="language in commonLanguages" :key="language">{{ language }}</option>
+          <option v-for="language in commonLanguages" :key="language">
+            {{ language }}
+          </option>
         </optgroup>
         <optgroup label="其他">
-          <option v-for="language in otherLanguages" :key="language">{{ language }}</option>
+          <option v-for="language in otherLanguages" :key="language">
+            {{ language }}
+          </option>
         </optgroup>
       </select>
     </div>
@@ -32,13 +36,16 @@ import { useFile } from "../hooks/file";
 import { useEditor } from "../hooks/editor";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 
-const { clearFile, updateFile, removeFile, file, setFileList, setFile } =
-  useFile();
-const { getValue, clearEditor, addEventListener, setLanguage } = useEditor();
-
-const languages = monaco.languages.getLanguages().map(lang => lang.id);
-const commonLanguages = ["javascript", "typescript", "python", "java", "csharp"];
-const otherLanguages = languages.filter(lang => !commonLanguages.includes(lang) && !lang.includes("freemarker2"));
+const { clearFile, updateFile, removeFile, file, setFile } = useFile();
+const {
+  getValue,
+  clearEditor,
+  addEventListener,
+  setLanguage,
+  fileType,
+  commonLanguages,
+  otherLanguages,
+} = useEditor();
 
 function onClear() {
   clearFile().then(() => {
@@ -62,11 +69,9 @@ function onSave() {
       ...file.value.data,
       body: getValue(),
     },
-  })
-    .then(setFileList)
-    .then(() => {
-      setFile(file.value);
-    });
+  }).then(() => {
+    setFile(file.value);
+  });
 }
 
 function onRemove() {

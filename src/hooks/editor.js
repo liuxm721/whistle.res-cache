@@ -7,36 +7,44 @@ import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";
 import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 
+// Worker 配置
+const workerMap = {
+  json: jsonWorker,
+  css: cssWorker,
+  scss: cssWorker,
+  less: cssWorker,
+  html: htmlWorker,
+  handlebars: htmlWorker,
+  razor: htmlWorker,
+  typescript: tsWorker,
+  javascript: tsWorker,
+};
+
+// 配置 Monaco 环境
 self.MonacoEnvironment = {
   getWorker(_, label) {
-    if (label === "json") {
-      return new jsonWorker();
-    }
-    if (label === "css" || label === "scss" || label === "less") {
-      return new cssWorker();
-    }
-    if (label === "html" || label === "handlebars" || label === "razor") {
-      return new htmlWorker();
-    }
-    if (label === "typescript" || label === "javascript") {
-      return new tsWorker();
-    }
-    return new editorWorker();
+    return new (workerMap[label] || editorWorker)();
   },
 };
 
 let editor;
-let curData;
-const isChange = ref(false);
+const fileType = ref("");
 
-function setIscChange(event) {
-  isChange.value = curData !== this.getValue();
-}
+// 语言列表
+const languages = monaco.languages.getLanguages().map((lang) => lang.id);
+const commonLanguages = [
+  "javascript",
+  "typescript",
+  "python",
+  "java",
+  "csharp",
+];
+const otherLanguages = languages.filter(
+  (lang) => !commonLanguages.includes(lang) && !lang.includes("freemarker2")
+);
 
 // 事件监听
-const onEvent = {
-  onDidChangeModelContent: [setIscChange],
-};
+const onEvent = {};
 
 export function useEditor() {
   function createEditor(dom) {
@@ -62,20 +70,20 @@ export function useEditor() {
 
   function updateEditor(data, { headers }) {
     const contentType = headers["content-type"];
-    const mimeType = contentType.split(";")[0];
-    const lang = mimeType.split("/")[1];
-    setLanguage(lang);
+    const [, fileType] = contentType.split(";")[0].split("/");
+
+    if (fileType) {
+      setLanguage(fileType);
+    }
 
     // 格式化json
-    if (lang === "json") {
+    if (fileType === "json") {
       data = JSON.stringify(JSON.parse(data), null, 2);
     }
 
-    curData = data;
     editor.setValue(data);
-    if (data) {
-      editor.updateOptions({ readOnly: false });
-    }
+    editor.updateOptions({ readOnly: !data });
+    return data;
   }
 
   function clearEditor() {
@@ -84,7 +92,7 @@ export function useEditor() {
   }
 
   function getValue() {
-    return editor.getValue();
+    return editor.getValue() || "";
   }
 
   function addEventListener(event, cb) {
@@ -96,6 +104,7 @@ export function useEditor() {
 
   function setLanguage(language) {
     monaco.editor.setModelLanguage(editor.getModel(), language);
+    fileType.value = language;
   }
 
   return {
@@ -103,8 +112,10 @@ export function useEditor() {
     updateEditor,
     getValue,
     addEventListener,
-    isChange,
     clearEditor,
     setLanguage,
+    fileType,
+    commonLanguages,
+    otherLanguages,
   };
 }

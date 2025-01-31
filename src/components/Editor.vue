@@ -8,19 +8,26 @@ import { onMounted, watch } from "vue";
 import { useEditor } from "../hooks/editor";
 import { useFile } from "../hooks/file";
 
-const { createEditor, updateEditor, clearEditor } = useEditor();
+const { createEditor, updateEditor, clearEditor, addEventListener } =
+  useEditor();
 const { file } = useFile();
 
 watch(file, (newFile, oldFile) => {
+  // 当前未选择文件
   if (!newFile) {
     clearEditor();
     return;
   }
+  // 文件未变化
   if (newFile?.name === oldFile?.name) {
     return;
   }
   const { body, headers } = newFile.data;
   updateEditor(body, { headers });
+});
+
+addEventListener("onDidChangeModelContent", function (event) {
+  file.value.isChange = this.getValue();
 });
 
 onMounted(() => {

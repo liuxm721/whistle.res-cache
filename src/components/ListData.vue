@@ -4,7 +4,7 @@
       class="list-item"
       :class="{
         'list-item--active': item.name === file?.name,
-        'list-item--isChange': item.name === file?.name && isChange,
+        'list-item--isChange': item.isChange,
       }"
       v-for="(item, index) in fileList"
       :key="index"
@@ -16,12 +16,9 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
 import { useFile } from "../hooks/file";
-import { useEditor } from "../hooks/editor";
 
 const { setFileList, fileList, setFile, file } = useFile();
-const { isChange } = useEditor();
 
 function onClickRecord(item) {
   setFile(item);
