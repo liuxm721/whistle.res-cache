@@ -12,8 +12,17 @@ export function useFile() {
     return apis
       .getFileList()
       .then((res) => {
+        // 创建旧文件状态的 Map
+        const oldFilesMap = new Map(fileList.map((file) => [file.name, file]));
+        // 使用 Map 快速查找旧文件状态
+        const mergedFiles = res.map((newFile) => ({
+          ...oldFilesMap.get(newFile.name),
+          ...newFile,
+        }));
+
         fileList.length = 0;
-        fileList.push(...res);
+        fileList.push(...mergedFiles);
+
         // 如果当前没有选中文件，默认选中第一个
         if (!file.value && fileList.length > 0) {
           file.value = fileList[0];
@@ -44,10 +53,12 @@ export function useFile() {
 
   async function updateFile(data) {
     return apis
-      .updateFile({
-        name: data.name,
-        data: data.data,
-      })
+      .updateFile(
+        data.map((item) => ({
+          name: item.name,
+          data: item.data,
+        }))
+      )
       .finally(() => {
         setFileList();
       });

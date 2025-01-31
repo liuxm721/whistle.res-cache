@@ -23,11 +23,18 @@ watch(file, (newFile, oldFile) => {
     return;
   }
   const { body, headers } = newFile.data;
-  updateEditor(body, { headers });
+  // 优先使用编辑过的内容
+  updateEditor(newFile.editedContent || body, { headers });
 });
 
 addEventListener("onDidChangeModelContent", function (event) {
-  file.value.isChange = this.getValue();
+  if (!file.value) return;
+  
+  const currentContent = this.getValue();
+  // 保存编辑的内容
+  file.value.editedContent = currentContent;
+  // 判断是否有变更
+  file.value.isChange = file.value.data.body !== currentContent;
 });
 
 onMounted(() => {

@@ -33,11 +33,11 @@ const fileType = ref("");
 // 语言列表
 const languages = monaco.languages.getLanguages().map((lang) => lang.id);
 const commonLanguages = [
+  "json",
   "javascript",
   "typescript",
-  "python",
   "java",
-  "csharp",
+  "python",
 ];
 const otherLanguages = languages.filter(
   (lang) => !commonLanguages.includes(lang) && !lang.includes("freemarker2")
@@ -74,11 +74,6 @@ export function useEditor() {
 
     if (fileType) {
       setLanguage(fileType);
-    }
-
-    // 格式化json
-    if (fileType === "json") {
-      data = JSON.stringify(JSON.parse(data), null, 2);
     }
 
     editor.setValue(data);

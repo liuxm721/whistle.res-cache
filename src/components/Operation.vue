@@ -15,7 +15,11 @@
       </button>
     </div>
     <div class="operation-right">
-      <select class="vscode-dropdown" :value="fileType"  @change="onLanguageChange">
+      <select
+        class="vscode-dropdown"
+        :value="fileType"
+        @change="onLanguageChange"
+      >
         <optgroup label="常用">
           <option v-for="language in commonLanguages" :key="language">
             {{ language }}
@@ -36,7 +40,7 @@ import { useFile } from "../hooks/file";
 import { useEditor } from "../hooks/editor";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 
-const { clearFile, updateFile, removeFile, file, setFile } = useFile();
+const { clearFile, updateFile, removeFile, file, setFile, fileList } = useFile();
 const {
   getValue,
   clearEditor,
@@ -63,14 +67,20 @@ function shortcutKeySave(event) {
 addEventListener("onKeyDown", shortcutKeySave);
 
 function onSave() {
-  updateFile({
-    name: file.value.name,
-    data: {
-      ...file.value.data,
-      body: getValue(),
-    },
-  }).then(() => {
-    setFile(file.value);
+  const files = fileList.filter((file) => file.isChange);
+  updateFile(
+    files.map((file) => ({
+      name: file.name,
+      data: {
+        ...file.data,
+        body: file.editedContent,
+      },
+    }))
+  ).then(() => {
+    for (const file of fileList) {
+      file.isChange = false;
+      file.editedContent = null;
+    }
   });
 }
 
