@@ -34,10 +34,9 @@ const fileType = ref("");
 const languages = monaco.languages.getLanguages().map((lang) => lang.id);
 const commonLanguages = [
   "json",
+  "html",
+  "css",
   "javascript",
-  "typescript",
-  "java",
-  "python",
 ];
 const otherLanguages = languages.filter(
   (lang) => !commonLanguages.includes(lang) && !lang.includes("freemarker2")
