@@ -1,13 +1,19 @@
 {
   "name": "whistle.res-cache",
-  "version": "0.0.1-dev-20250205",
+  "version": "0.0.1-dev-20250208",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liuxm721/whistle.res-cache"
+  },
+  "homepage": "https://github.com/liuxm721/whistle.res-cache",
   "scripts": {
     "dev": "vite --config src/vite.config.js",
     "build": "vite build  --config src/vite.config.js",
     "preview": "vite preview  --config src/vite.config.js"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.11.3",
     "koa": "^2.15.0",
     "koa-bodyparser": "^4.4.1",
     "koa-onerror": "^4.2.0",

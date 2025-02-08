@@ -58,13 +58,17 @@ function onClear() {
 }
 
 function shortcutKeySave(event) {
-  if (event.ctrlKey && event.keyCode === monaco.KeyCode.KeyS) {
+  // Ctrl + S
+  // monaco.KeyCode.KeyS 编辑器内部的键盘码
+  // e.key window.keydown事件的键值
+  if (event.ctrlKey && (event.keyCode === monaco.KeyCode.KeyS || ['S', 's'].includes(e.key))) {
     event.preventDefault();
     onSave();
   }
 }
 
 addEventListener("onKeyDown", shortcutKeySave);
+window.addEventListener("keydown", shortcutKeySave);
 
 function onSave() {
   const files = fileList.filter((file) => file.isChange);
