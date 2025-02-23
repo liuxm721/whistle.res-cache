@@ -41,7 +41,7 @@ export function useFile() {
     }
 
     const targetFile = fileList.find((item) => item.name === _file.name);
-    file.value = targetFile || (fileList.length > 0 ? fileList[0] : null);
+    file.value = targetFile || (fileList.length > 0 ? fileList?.[0] : null);
   }
 
   async function clearFile() {

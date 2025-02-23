@@ -75,6 +75,10 @@ export function useEditor() {
       setLanguage(fileType);
     }
 
+    if (typeof data !== 'string') {
+      data = ''
+    }
+
     editor.setValue(data);
     editor.updateOptions({ readOnly: !data });
     return data;

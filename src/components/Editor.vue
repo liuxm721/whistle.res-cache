@@ -22,7 +22,7 @@ watch(file, (newFile, oldFile) => {
   if (newFile?.name === oldFile?.name) {
     return;
   }
-  const { body, headers } = newFile.data;
+  const { body, headers } = newFile.data?.res;
   // 优先使用编辑过的内容
   updateEditor(newFile.editedContent || body, { headers });
 });
@@ -34,7 +34,7 @@ addEventListener("onDidChangeModelContent", function (event) {
   // 保存编辑的内容
   file.value.editedContent = currentContent;
   // 判断是否有变更
-  file.value.isChange = file.value.data.body !== currentContent;
+  file.value.isChange = file.value.data?.res?.body !== currentContent;
 });
 
 onMounted(() => {

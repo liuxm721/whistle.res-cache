@@ -47,9 +47,9 @@ refreshFileList();
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    &:hover {
+    // &:hover {
       // background-color: #dadada;
-    }
+    // }
     &--active,
     &--active:hover {
       background-color: var(--vscode-dropdown-hover-bg);

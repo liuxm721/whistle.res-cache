@@ -40,9 +40,9 @@ import { useFile } from "../hooks/file";
 import { useEditor } from "../hooks/editor";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 
-const { clearFile, updateFile, removeFile, file, setFile, fileList } = useFile();
+const { clearFile, updateFile, removeFile, file, setFile, fileList } =
+  useFile();
 const {
-  getValue,
   clearEditor,
   addEventListener,
   setLanguage,
@@ -61,7 +61,10 @@ function shortcutKeySave(event) {
   // Ctrl + S
   // monaco.KeyCode.KeyS 编辑器内部的键盘码
   // e.key window.keydown事件的键值
-  if (event.ctrlKey && (event.keyCode === monaco.KeyCode.KeyS || ['S', 's'].includes(e.key))) {
+  if (
+    event.ctrlKey &&
+    (event.keyCode === monaco.KeyCode.KeyS || ["S", "s"].includes(event.key))
+  ) {
     event.preventDefault();
     onSave();
   }
@@ -77,7 +80,10 @@ function onSave() {
       name: file.name,
       data: {
         ...file.data,
-        body: file.editedContent,
+        res: {
+          ...file.data.res,
+          body: file.editedContent,
+        },
       },
     }))
   ).then(() => {

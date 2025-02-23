@@ -44,9 +44,9 @@ function handleMouseDown(e) {
   flex-direction: column;
   height: 100vh;
 
-  .resize-top {
+  // .resize-top {
     // height: 30px;
-  }
+  // }
   .resize-bottom {
     display: flex;
     flex: 1 1 auto;
