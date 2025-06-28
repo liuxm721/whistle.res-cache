@@ -62,7 +62,7 @@ function shortcutKeySave(event) {
   // monaco.KeyCode.KeyS 编辑器内部的键盘码
   // e.key window.keydown事件的键值
   if (
-    event.ctrlKey &&
+    (event.ctrlKey || event.metaKey) &&
     (event.keyCode === monaco.KeyCode.KeyS || ["S", "s"].includes(event.key))
   ) {
     event.preventDefault();
